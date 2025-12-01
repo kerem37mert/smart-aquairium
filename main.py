@@ -4,6 +4,8 @@ from aquarium import Aquarium
 from fish import FishTank
 from water_quality import WaterQuality
 
+import ws_client 
+
 ####### Renkler #######
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -181,6 +183,9 @@ class AquariumSimulator:
             self.water_quality.change_water()  # Suyu değiştir
     
     def run(self):
+        # Websocket başlat
+        ws_client.ws_thread.start()
+
         """Ana döngü"""
         while self.running:
             # Olayları işle
@@ -218,6 +223,21 @@ class AquariumSimulator:
 
             # Kontrol panelini çiz
             self.draw_panel()
+
+            aquarium_data = {
+                "fish_count": len(self.fish_tank.fishes),
+                "water_quality": {
+                    "ph": self.water_quality.ph,
+                    "ammonia": self.water_quality.ammonia,
+                    "nitrite": self.water_quality.nitrite,
+                    "nitrate": self.water_quality.nitrate,
+                    "status": self.water_quality.get_status_text()
+                },
+                "timestamp": pygame.time.get_ticks()
+            }
+
+            # WebSocket üzerinden gönder
+            ws_client.send_data(aquarium_data)
 
             # Ekranı güncelle
             pygame.display.flip()
