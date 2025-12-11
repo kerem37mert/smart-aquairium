@@ -24,7 +24,7 @@ class AquariumSimulator:
         self.height = 700
         self.title = title
 
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         pygame.display.set_caption(title) # Programın başlığını ayarla
 
         # Font Ayarları
@@ -208,6 +208,9 @@ class AquariumSimulator:
             # Su kalitesini güncelle
             fish_count = len(self.fish_tank.fishes)
             self.water_quality.update(fish_count)
+
+            # Güncel ekran boyutunu al
+            self.width, self.height = self.screen.get_size()
             
             # Çiz
             self.screen.fill(WHITE)

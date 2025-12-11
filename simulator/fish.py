@@ -90,10 +90,10 @@ class FishTank:
         fish_colors = [
             (255, 140, 0),   # Turuncu
             (255, 69, 0),    # Kırmızı-turuncu
-            (30, 144, 255),  # Mavi
+            (248, 101, 252), # Pembe
             (255, 215, 0),   # Altın sarısı
             (147, 112, 219), # Mor
-            (0, 206, 209),   # Turkuaz
+            (16, 210, 76),   # Yeşil
         ]
         
         # Başlangıçtaki balıklar

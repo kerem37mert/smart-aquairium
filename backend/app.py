@@ -26,5 +26,11 @@ def websocket_route(ws):
 
         ws.send("Veri güncellendi")
 
+
+# HTTP İLE
+@app.route("/data")
+def get_data():
+    return db.getData()
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

@@ -41,6 +41,7 @@ class DB:
         conn.commit()
         conn.close()
 
+    # Güncelleme
     def updateData(self, data):
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -62,3 +63,19 @@ class DB:
 
         conn.commit()
         conn.close()
+
+    # Veri Çekme
+    def getData(self):
+        conn = self.get_connection()
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM info WHERE id=1")
+        row = cursor.fetchone()
+
+        conn.close()
+
+        if row is None:
+            return {}
+        
+        return dict(row)
