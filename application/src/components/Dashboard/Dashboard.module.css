@@ -1,0 +1,33 @@
+.dashboard {
+    width: 80%;
+    margin: 25px auto;
+}
+
+.dashboard-item {
+    background-color: #e0e0e0;
+    border: 2px solid gray;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+}
+
+.label {
+    font-size: 1.1rem;
+}
+
+.value {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: rgb(100, 180, 220);
+}
+
+.dashboard-button {
+    padding: 12.5px 15px;
+    cursor: pointer;
+    color: white;
+}
