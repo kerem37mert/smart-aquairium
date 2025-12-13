@@ -188,7 +188,21 @@ class AquariumSimulator:
 
         """Ana döngü"""
         while self.running:
-            # Olayları işle
+
+            # WebSocketten gelen komutları kontrol et
+            while not ws_client.command_queue.empty():
+                command = ws_client.command_queue.get()
+
+                if command == "feed":
+                    print("WS -> Yem ver çalıştı")
+                    self.fish_tank.feed_fish()
+                    self.water_quality.feed_impact()
+
+                elif command == "water_change":
+                    print("WS -> Su değiştir çalıştı")
+                    self.water_quality.change_water()
+
+            # Ui'dan gelen Olayları işle
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False

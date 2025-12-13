@@ -1,6 +1,9 @@
 import websocket
 import threading
 import json
+import queue
+
+command_queue = queue.Queue()
 
 # =====================
 # CALLBACKLER
@@ -14,12 +17,8 @@ def on_message(ws, message):
         if msg_type == "command":
             command = data["payload"]["name"]
             print("Komut geldi:", command)
-
-            if command == "feed":
-                print("Yem ver komutu alındı")
-                # burada istersen fish_tank.feed_fish() tetiklenir
-            elif command == "water_change":
-                print("Su değiştir komutu alındı")
+            
+            command_queue.put(command)
 
     except Exception as e:
         print("Mesaj parse hatası:", e)
