@@ -23,10 +23,10 @@ def websocket_route(ws):
 
         if client_type == "desktop":
             desktop_clients.add(ws)
-            print(" Desktop bağlandı")
+            print("Desktop bağlandı")
         elif client_type == "web":
             web_clients.add(ws)
-            print(" Web bağlandı")
+            print("Web bağlandı")
         else:
             ws.send("client type eksik")
             return
@@ -71,8 +71,7 @@ def websocket_route(ws):
     finally:
         desktop_clients.discard(ws)
         web_clients.discard(ws)
-        print("🔌 Bağlantı kapandı")
-
+        print("Bağlantı kapandı")
 
 # HTTP İLE
 @app.route("/data")

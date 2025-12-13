@@ -14,6 +14,12 @@ DARK_GRAY = (50, 50, 50)
 PANEL_BG = (240, 240, 245)
 #######################
 
+# Yardımcı fonksiyon
+def rgb_to_hex(rgb):
+    r, g, b = rgb
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+
 class AquariumSimulator:
     """ Ana Simülatör sınıfı """
     def __init__(self, title):
@@ -248,7 +254,8 @@ class AquariumSimulator:
                     "ammonia": self.water_quality.ammonia,
                     "nitrite": self.water_quality.nitrite,
                     "nitrate": self.water_quality.nitrate,
-                    "status": self.water_quality.get_status_text()
+                    "status": self.water_quality.get_status_text(),
+                    "color": rgb_to_hex(self.water_quality.get_status_color())
                 },
                 "timestamp": pygame.time.get_ticks()
             }

@@ -15,7 +15,8 @@ const App = () => {
         ammonia: 0,
         nitrite: 0,
         nitrate: 0,
-        status: "-"
+        status: "-",
+        color: "#000"
     });
 
     useEffect(() => {
@@ -90,7 +91,7 @@ const App = () => {
                     <DashBoardItem label="Amonyak" value={`${water.ammonia.toFixed(2)} ppm`} />
                     <DashBoardItem label="Nitrit" value={`${water.nitrite.toFixed(2)} ppm`} />
                     <DashBoardItem label="Nitrat" value={`${water.nitrate.toFixed(1)} ppm`} />
-                    <DashBoardItem label="Durum" value={water.status} />
+                    <DashBoardItem label="Durum" value={water.status} color={water.color} />
                 </DashboardItemGroup>
 
                 <div className="button-container">
