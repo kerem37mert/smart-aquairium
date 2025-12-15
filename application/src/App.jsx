@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import Header from "./components/header";
+import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import DashBoardItem from "./components/Dashboard/DashboardItem";
 import DashboardItemGroup from "./components/Dashboard/DashboardItemGroup";
