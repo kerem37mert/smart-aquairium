@@ -109,7 +109,7 @@ class AquariumSimulator:
         y_offset = 290
         
         # Su kalitesi kutusu
-        water_box = pygame.Rect(panel_x + 20, y_offset, panel_width - 40, 200)
+        water_box = pygame.Rect(panel_x + 20, y_offset, panel_width - 40, 220)
         pygame.draw.rect(self.screen, WHITE, water_box, border_radius=10)
         pygame.draw.rect(self.screen, (100, 150, 200), water_box, 3, border_radius=10)
         
@@ -129,6 +129,11 @@ class AquariumSimulator:
         # pH
         ph_text = self.font_small.render(f"pH: {self.water_quality.ph:.1f}", True, DARK_GRAY)
         self.screen.blit(ph_text, (panel_x + 40, param_y))
+
+        # Sıcaklık
+        param_y += 30
+        temp_text = self.font_small.render(f"Sıcaklık: {self.water_quality.temperature:.1f} °C", True, DARK_GRAY)
+        self.screen.blit(temp_text, (panel_x + 40, param_y))
         
         # Amonyak
         param_y += 30
@@ -146,7 +151,7 @@ class AquariumSimulator:
         self.screen.blit(nitrate_text, (panel_x + 40, param_y))
 
         # Su Değiştirme Butonu
-        y_offset = 510
+        y_offset = 540
         button_width = panel_width - 40
         button_height = 60
         
@@ -170,12 +175,12 @@ class AquariumSimulator:
         # Bİlgilendirme - F
         title = self.font_small.render("F - Balık Ekle", True, DARK_GRAY)
         text_x = panel_x + (panel_width - title.get_width()) // 2   # Metnin ortası
-        self.screen.blit(title, (text_x, 600))
+        self.screen.blit(title, (text_x, 620))
 
         # Bİlgilendirme - ESC
         title = self.font_small.render("ESC - Çıkış", True, DARK_GRAY)
         text_x = panel_x + (panel_width - title.get_width()) // 2   # Metnin ortası
-        self.screen.blit(title, (text_x, 630))
+        self.screen.blit(title, (text_x, 650))
 
     def handle_click(self, pos):
         """Mouse tıklamalarını işle"""
@@ -254,6 +259,7 @@ class AquariumSimulator:
                     "ammonia": self.water_quality.ammonia,
                     "nitrite": self.water_quality.nitrite,
                     "nitrate": self.water_quality.nitrate,
+                    "temperature": self.water_quality.temperature,
                     "status": self.water_quality.get_status_text(),
                     "color": rgb_to_hex(self.water_quality.get_status_color())
                 },

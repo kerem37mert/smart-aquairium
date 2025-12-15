@@ -17,6 +17,7 @@ const App = () => {
         ammonia: 0,
         nitrite: 0,
         nitrate: 0,
+        temperature: 0,
         status: "-",
         color: "#000"
     });
@@ -59,7 +60,8 @@ const App = () => {
                         ph: payload.water_quality.ph,
                         ammonia: payload.water_quality.ammonia,
                         nitrite: payload.water_quality.nitrite,
-                        nitrate: payload.water_quality.nitrate
+                        nitrate: payload.water_quality.nitrate,
+                        temperature: payload.water_quality.temperature
                     };
 
                     // Son 60 veriyi tut (Yaklaşık 1 dakika)
@@ -116,6 +118,7 @@ const App = () => {
 
                 <DashboardItemGroup title="Su Kalitesi">
                     <DashBoardItem label="pH" value={water.ph.toFixed(1)} />
+                    <DashBoardItem label="Sıcaklık" value={`${water.temperature.toFixed(1)} °C`} />
                     <DashBoardItem label="Amonyak" value={`${water.ammonia.toFixed(2)} ppm`} />
                     <DashBoardItem label="Nitrit" value={`${water.nitrite.toFixed(2)} ppm`} />
                     <DashBoardItem label="Nitrat" value={`${water.nitrate.toFixed(1)} ppm`} />

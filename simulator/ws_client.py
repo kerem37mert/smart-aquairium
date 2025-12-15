@@ -10,6 +10,8 @@ command_queue = queue.Queue()
 # =====================
 
 def on_message(ws, message):
+    print("RAW mesaj:", repr(message)) 
+
     try:
         data = json.loads(message)
         msg_type = data.get("type")
@@ -17,7 +19,6 @@ def on_message(ws, message):
         if msg_type == "command":
             command = data["payload"]["name"]
             print("Komut geldi:", command)
-            
             command_queue.put(command)
 
     except Exception as e:

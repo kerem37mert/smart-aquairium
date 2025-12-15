@@ -21,9 +21,17 @@ class DB:
                 ammonia REAL,
                 nitrite REAL,
                 nitrate REAL,
+                temperature REAL,
                 status TEXT
             )
         ''')
+
+        # Basit migrasyon: temperature sütunu yoksa ekle
+        try:
+            cursor.execute("ALTER TABLE info ADD COLUMN temperature REAL DEFAULT 25.0")
+        except sqlite3.OperationalError:
+            # Sütun zaten varsa hata verir, yoksay
+            pass
 
         conn.commit()
         conn.close()
@@ -34,9 +42,9 @@ class DB:
         cursor = conn.cursor()
         
         cursor.execute("""
-            INSERT INTO info (fish_count, ph, ammonia, nitrite, nitrate, status) 
-            VALUES(?, ?, ?, ?, ?, ?)
-        """, (0, 7, 0, 0, 0, "unkown"))
+            INSERT INTO info (fish_count, ph, ammonia, nitrite, nitrate, temperature, status) 
+            VALUES(?, ?, ?, ?, ?, ?, ?)
+        """, (0, 7, 0, 0, 0, 25.0, "unkown"))
 
         conn.commit()
         conn.close()
@@ -53,13 +61,14 @@ class DB:
         ammonia = water_quality.get('ammonia', 0.0)
         nitrite = water_quality.get('nitrite', 0.0)
         nitrate = water_quality.get('nitrate', 0.0)
+        temperature = water_quality.get('temperature', 25.0)
         status = water_quality.get('status', 'Unknown')
 
         cursor.execute('''
             UPDATE info SET  
-            fish_count=?, ph=?, ammonia=?, nitrite=?, nitrate=?, status=?
+            fish_count=?, ph=?, ammonia=?, nitrite=?, nitrate=?, temperature=?, status=?
             WHERE id=1 
-        ''', (fish_count, ph, ammonia, nitrite, nitrate, status))
+        ''', (fish_count, ph, ammonia, nitrite, nitrate, temperature, status))
 
         conn.commit()
         conn.close()

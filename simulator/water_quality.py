@@ -28,6 +28,12 @@ class WaterQuality:
             'acceptable': 40,
             'warning': 80,
             'danger': 100
+        },
+        'temperature': {  # Celsius
+            'ideal_min': 24.0,
+            'ideal_max': 26.0,
+            'danger_min': 20.0,
+            'danger_max': 30.0
         }
     }
     
@@ -37,6 +43,7 @@ class WaterQuality:
         self.ammonia = 0.0
         self.nitrite = 0.0
         self.nitrate = 5.0
+        self.temperature = 25.0  # İdeal sıcaklık
         
         # Zaman sayacı
         self.time_counter = 0
@@ -67,12 +74,16 @@ class WaterQuality:
             
             # pH zamanla hafifçe değişir
             self.ph += random.uniform(-0.05, 0.05)
+
+            # Sıcaklık çok hafif dalgalanır
+            self.temperature += random.uniform(-0.1, 0.1)
             
             # Değerleri sınırla
             self.ammonia = max(0, min(self.ammonia, 2.0))
             self.nitrite = max(0, min(self.nitrite, 2.0))
             self.nitrate = max(0, min(self.nitrate, 150))
             self.ph = max(5.5, min(self.ph, 9.0))
+            self.temperature = max(18.0, min(self.temperature, 32.0))
     
     def feed_impact(self):
         """Yem verildiğinde su kalitesine etkisi"""
@@ -85,6 +96,7 @@ class WaterQuality:
         self.nitrite = 0.0
         self.nitrate = 5.0
         self.ph = 7.0
+        self.temperature = 25.0
     
     def get_status(self):
         """Su durumunu değerlendir"""
@@ -93,7 +105,9 @@ class WaterQuality:
             self.nitrite >= self.THRESHOLDS['nitrite']['danger'] or
             self.nitrate >= self.THRESHOLDS['nitrate']['danger'] or
             self.ph < self.THRESHOLDS['ph']['danger_min'] or
-            self.ph > self.THRESHOLDS['ph']['danger_max']):
+            self.ph > self.THRESHOLDS['ph']['danger_max'] or
+            self.temperature < self.THRESHOLDS['temperature']['danger_min'] or
+            self.temperature > self.THRESHOLDS['temperature']['danger_max']):
             return 'DANGER'  # Kırmızı
         
         # Uyarı durumları
@@ -101,7 +115,9 @@ class WaterQuality:
             self.nitrite >= self.THRESHOLDS['nitrite']['warning'] or
             self.nitrate >= self.THRESHOLDS['nitrate']['warning'] or
             self.ph < self.THRESHOLDS['ph']['ideal_min'] or
-            self.ph > self.THRESHOLDS['ph']['ideal_max']):
+            self.ph > self.THRESHOLDS['ph']['ideal_max'] or
+            self.temperature < self.THRESHOLDS['temperature']['ideal_min'] or
+            self.temperature > self.THRESHOLDS['temperature']['ideal_max']):
             return 'WARNING'  # Sarı
         
         # Her şey normal
