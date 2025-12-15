@@ -45,7 +45,7 @@ def on_open(ws):
 # =====================
 
 ws = websocket.WebSocketApp(
-    "ws://localhost:5000/ws",
+    "ws://136.114.212.51:5000/ws",
     on_open=on_open,
     on_message=on_message,
     on_error=on_error,

@@ -23,7 +23,7 @@ const App = () => {
 
     useEffect(() => {
         // WS BAĞLAN
-        wsRef.current = new WebSocket("ws://localhost:5000/ws");
+        wsRef.current = new WebSocket("ws://136.114.212.51:5000/ws");
 
         wsRef.current.onopen = () => {
             console.log("WS bağlı");
