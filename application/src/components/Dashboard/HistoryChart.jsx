@@ -1,0 +1,46 @@
+import { 
+    LineChart, 
+    Line, 
+    XAxis, 
+    YAxis, 
+    CartesianGrid, 
+    Tooltip, 
+    Legend, 
+    ResponsiveContainer 
+} from 'recharts';
+
+const HistoryChart = ({ data }) => {
+    if (!data || data.length === 0) return null;
+
+    return (
+        <div style={{
+            backgroundColor: 'white',
+            padding: '20px',
+            marginTop: '20px',
+            border: "2px solid gray"
+        }}>
+            <h3 style={{ color: '#333', marginBottom: '20px' }}>Canlı Su Değerleri</h3>
+            <div style={{ width: '100%', height: 300 }}>
+                <ResponsiveContainer>
+                    <LineChart
+                        data={data}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="time" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        {/* isAnimationActive={false} prevents the line from "growing" from 0 on every update, creating a smooth scrolling effect */}
+                        <Line type="monotone" dataKey="ph" stroke="#8884d8" name="pH" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line type="monotone" dataKey="ammonia" stroke="#82ca9d" name="Amonyak" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line type="monotone" dataKey="nitrite" stroke="#ffc658" name="Nitrit" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line type="monotone" dataKey="nitrate" stroke="#ff7300" name="Nitrat" dot={false} isAnimationActive={false} strokeWidth={2} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+};
+
+export default HistoryChart;

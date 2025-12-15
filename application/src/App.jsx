@@ -5,11 +5,13 @@ import Dashboard from "./components/Dashboard";
 import DashBoardItem from "./components/Dashboard/DashboardItem";
 import DashboardItemGroup from "./components/Dashboard/DashboardItemGroup";
 import DashboardButton from "./components/Dashboard/DashboardButton";
+import HistoryChart from "./components/Dashboard/HistoryChart";
 
 const App = () => {
     const wsRef = useRef(null);
 
     const [fishCount, setFishCount] = useState(0);
+    const [history, setHistory] = useState([]);
     const [water, setWater] = useState({
         ph: 0,
         ammonia: 0,
@@ -41,6 +43,32 @@ const App = () => {
 
                 setFishCount(payload.fish_count);
                 setWater(payload.water_quality);
+
+                // Geçmiş veriyi güncelle
+                setHistory(prev => {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+                    // Eğer son veri ile aynı saniyedeysek ekleme yapma (Throttle)
+                    if (prev.length > 0 && prev[prev.length - 1].time === timeString) {
+                        return prev;
+                    }
+
+                    const newData = {
+                        time: timeString,
+                        ph: payload.water_quality.ph,
+                        ammonia: payload.water_quality.ammonia,
+                        nitrite: payload.water_quality.nitrite,
+                        nitrate: payload.water_quality.nitrate
+                    };
+
+                    // Son 60 veriyi tut (Yaklaşık 1 dakika)
+                    const newHistory = [...prev, newData];
+                    if (newHistory.length > 60) {
+                        return newHistory.slice(newHistory.length - 60);
+                    }
+                    return newHistory;
+                });
             }
         };
 
@@ -106,6 +134,8 @@ const App = () => {
                         onClick={() => sendCommand("water_change")}
                     />
                 </div>
+
+                <HistoryChart data={history} />
             </Dashboard>
         </>
     );
