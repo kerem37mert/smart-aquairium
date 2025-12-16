@@ -9,6 +9,7 @@ import HistoryChart from "./components/Dashboard/HistoryChart";
 
 const App = () => {
     const wsRef = useRef(null);
+    const lastAlertTime = useRef(0);
 
     const [fishCount, setFishCount] = useState(0);
     const [history, setHistory] = useState([]);
@@ -71,6 +72,20 @@ const App = () => {
                     }
                     return newHistory;
                 });
+
+                // Sesli Uyarı Kontrolü (Kirli Su)
+                if (payload.water_quality.status === "KİRLİ - ACİL SU DEĞİŞİMİ!") {
+                    const now = Date.now();
+                    // 30 saniyede bir uyar
+                    if (now - lastAlertTime.current > 30000) {
+                        if ('speechSynthesis' in window) {
+                            const msg = new SpeechSynthesisUtterance("Dikkat! Akvaryum suyu kirli, acil su değişimi gerekli!");
+                            msg.lang = 'tr-TR';
+                            window.speechSynthesis.speak(msg);
+                        }
+                        lastAlertTime.current = now;
+                    }
+                }
             }
         };
 
