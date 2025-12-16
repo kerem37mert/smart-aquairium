@@ -28,15 +28,16 @@ const HistoryChart = ({ data }) => {
                     >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="time" />
-                        <YAxis />
+                        <YAxis yAxisId="left" />
+                        <YAxis yAxisId="right" orientation="right" />
                         <Tooltip />
                         <Legend />
                         {/* isAnimationActive={false} prevents the line from "growing" from 0 on every update, creating a smooth scrolling effect */}
-                        <Line type="monotone" dataKey="ph" stroke="#8884d8" name="pH" dot={false} isAnimationActive={false} strokeWidth={2} />
-                        <Line type="monotone" dataKey="temperature" stroke="#ff4d4d" name="Sıcaklık" dot={false} isAnimationActive={false} strokeWidth={2} />
-                        <Line type="monotone" dataKey="ammonia" stroke="#82ca9d" name="Amonyak" dot={false} isAnimationActive={false} strokeWidth={2} />
-                        <Line type="monotone" dataKey="nitrite" stroke="#ffc658" name="Nitrit" dot={false} isAnimationActive={false} strokeWidth={2} />
-                        <Line type="monotone" dataKey="nitrate" stroke="#ff7300" name="Nitrat" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line yAxisId="left" type="monotone" dataKey="ph" stroke="#8884d8" name="pH" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line yAxisId="right" type="monotone" dataKey="temperature" stroke="#ff4d4d" name="Sıcaklık" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line yAxisId="left" type="monotone" dataKey="ammonia" stroke="#82ca9d" name="Amonyak" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line yAxisId="left" type="monotone" dataKey="nitrite" stroke="#ffc658" name="Nitrit" dot={false} isAnimationActive={false} strokeWidth={2} />
+                        <Line yAxisId="left" type="monotone" dataKey="nitrate" stroke="#ff7300" name="Nitrat" dot={false} isAnimationActive={false} strokeWidth={2} />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
