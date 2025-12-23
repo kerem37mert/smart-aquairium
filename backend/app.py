@@ -87,7 +87,6 @@ def login():
     username = data.get("username")
     password = data.get("password")
     
-    # Basit doğrulama (gerçek uygulamada veritabanı kullanılmalı)
     # Şimdilik herhangi bir kullanıcı adı ve şifre kabul edilir
     if username and password:
         return jsonify({
