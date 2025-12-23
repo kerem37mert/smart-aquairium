@@ -6,12 +6,14 @@ import DashBoardItem from "./components/Dashboard/DashboardItem";
 import DashboardItemGroup from "./components/Dashboard/DashboardItemGroup";
 import DashboardButton from "./components/Dashboard/DashboardButton";
 import HistoryChart from "./components/Dashboard/HistoryChart";
+import FishList from "./components/Dashboard/FishList";
 
 const App = () => {
     const wsRef = useRef(null);
     const lastAlertTime = useRef(0);
 
     const [fishCount, setFishCount] = useState(0);
+    const [fishes, setFishes] = useState([]);
     const [history, setHistory] = useState([]);
     const [water, setWater] = useState({
         ph: 0,
@@ -44,6 +46,7 @@ const App = () => {
                 const payload = data.payload;
 
                 setFishCount(payload.fish_count);
+                setFishes(payload.fishes || []);
                 setWater(payload.water_quality);
 
                 // Geçmiş veriyi güncelle
@@ -154,6 +157,8 @@ const App = () => {
                 </div>
 
                 <HistoryChart data={history} />
+
+                <FishList fishes={fishes} />
             </Dashboard>
         </>
     );

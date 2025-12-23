@@ -254,6 +254,7 @@ class AquariumSimulator:
 
             aquarium_data = {
                 "fish_count": len(self.fish_tank.fishes),
+                "fishes": self.fish_tank.get_fish_list(),
                 "water_quality": {
                     "ph": self.water_quality.ph,
                     "ammonia": self.water_quality.ammonia,

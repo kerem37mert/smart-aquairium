@@ -1,15 +1,21 @@
 import pygame
 import random
 import math
+import uuid
 
 class Fish:
     """Animasyonlu balık sınıfı"""
     
-    def __init__(self, x, y, color, size=30):
+    def __init__(self, x, y, color, size=30, species=None, age=None, gender=None):
+        self.id = str(uuid.uuid4())[:8]  # Benzersiz ID
         self.x = x
         self.y = y
         self.color = color
         self.size = size
+        self.species = species or random.choice(["Japon Balığı", "Guppy", "Neon Tetra", "Molly", "Platy"])
+        self.age = age or random.randint(3, 24)  # Ay cinsinden (3-24 ay)
+        self.gender = gender or random.choice(["Erkek", "Dişi"])
+        self.health = "Sağlıklı"  # Varsayılan sağlık durumu
         self.speed_x = random.uniform(-1, 1)
         self.speed_y = random.uniform(-0.5, 0.5)
         self.direction = 1 if self.speed_x > 0 else -1
@@ -148,3 +154,19 @@ class FishTank:
         x = (self.bounds['left'] + self.bounds['right']) // 2
         y = (self.bounds['top'] + self.bounds['bottom']) // 2
         self.fishes.append(Fish(x, y, color))
+    
+    def get_fish_list(self):
+        """Balık listesini JSON formatında döndür"""
+        fish_list = []
+        for fish in self.fishes:
+            fish_data = {
+                "id": fish.id,
+                "species": fish.species,
+                "color": f"#{fish.color[0]:02x}{fish.color[1]:02x}{fish.color[2]:02x}",
+                "size": fish.size,
+                "age": fish.age,
+                "gender": fish.gender,
+                "health": fish.health
+            }
+            fish_list.append(fish_data)
+        return fish_list
