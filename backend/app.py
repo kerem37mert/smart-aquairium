@@ -1,9 +1,11 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_sock import Sock
+from flask_cors import CORS
 from db import DB
 import json
 
 app = Flask(__name__)
+CORS(app)  # CORS'u etkinleştir
 sock = Sock(app)
 db = DB()
 
@@ -77,6 +79,26 @@ def websocket_route(ws):
 @app.route("/data")
 def get_data():
     return db.getData()
+
+# Login endpoint
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+    
+    # Basit doğrulama (gerçek uygulamada veritabanı kullanılmalı)
+    # Şimdilik herhangi bir kullanıcı adı ve şifre kabul edilir
+    if username and password:
+        return jsonify({
+            "success": True,
+            "message": "Giriş başarılı"
+        }), 200
+    else:
+        return jsonify({
+            "success": False,
+            "message": "Kullanıcı adı ve şifre gerekli"
+        }), 400
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

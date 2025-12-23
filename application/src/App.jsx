@@ -7,14 +7,18 @@ import DashboardItemGroup from "./components/Dashboard/DashboardItemGroup";
 import DashboardButton from "./components/Dashboard/DashboardButton";
 import HistoryChart from "./components/Dashboard/HistoryChart";
 import FishList from "./components/Dashboard/FishList";
+import AquariumCamera from "./components/Dashboard/AquariumCamera";
+import Login from "./components/Login";
 
 const App = () => {
     const wsRef = useRef(null);
     const lastAlertTime = useRef(0);
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [fishCount, setFishCount] = useState(0);
     const [fishes, setFishes] = useState([]);
     const [history, setHistory] = useState([]);
+    const [cameraFrame, setCameraFrame] = useState(null);
     const [water, setWater] = useState({
         ph: 0,
         ammonia: 0,
@@ -48,6 +52,11 @@ const App = () => {
                 setFishCount(payload.fish_count);
                 setFishes(payload.fishes || []);
                 setWater(payload.water_quality);
+
+                // Kamera görüntüsünü güncelle (varsa)
+                if (payload.camera_frame) {
+                    setCameraFrame(payload.camera_frame);
+                }
 
                 // Geçmiş veriyi güncelle
                 setHistory(prev => {
@@ -128,6 +137,16 @@ const App = () => {
         border: "2px solid rgb(40, 100, 160)",
     };
 
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+    };
+
+    // Giriş yapılmadıysa login ekranını göster
+    if (!isLoggedIn) {
+        return <Login onLogin={handleLogin} />;
+    }
+
+    // Giriş yapıldıysa dashboard'u göster
     return (
         <>
             <Header title="Akıllı Akvaryum Yönetimi" />
@@ -155,6 +174,8 @@ const App = () => {
                         onClick={() => sendCommand("water_change")}
                     />
                 </div>
+
+                <AquariumCamera cameraFrame={cameraFrame} />
 
                 <HistoryChart data={history} />
 

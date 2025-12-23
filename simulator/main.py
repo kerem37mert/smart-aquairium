@@ -3,6 +3,8 @@ import sys
 from aquarium import Aquarium
 from fish import FishTank
 from water_quality import WaterQuality
+import base64
+from io import BytesIO
 
 import ws_client 
 
@@ -50,6 +52,9 @@ class AquariumSimulator:
         # Saat
         self.clock = pygame.time.Clock()
         self.running = True
+        
+        # Kamera frame sayacı (her 12 frame'de bir görüntü gönder = ~5 FPS)
+        self.camera_frame_counter = 0
 
     def draw_panel(self):
         """Sağ taraftaki kontrol panelini çiz"""
@@ -182,6 +187,30 @@ class AquariumSimulator:
         text_x = panel_x + (panel_width - title.get_width()) // 2   # Metnin ortası
         self.screen.blit(title, (text_x, 650))
 
+    def capture_screenshot(self):
+        """Akvaryum ekranını yakala ve base64'e çevir"""
+        # Sadece akvaryumun iç kısmını yakala (beyaz arka plan ve başlık olmadan)
+        # Akvaryum koordinatları: x=50, y=100, width=700, height=500
+        aquarium_rect = (self.aquarium.x, self.aquarium.y, 
+                        self.aquarium.width, self.aquarium.height)
+        
+        aquarium_surface = pygame.Surface((self.aquarium.width, self.aquarium.height))
+        aquarium_surface.blit(self.screen, (0, 0), aquarium_rect)
+        
+        # Boyutu optimize et (400px genişlik - kalite ve performans dengesi)
+        target_width = 400
+        target_height = int(400 * self.aquarium.height / self.aquarium.width)
+        small_surface = pygame.transform.scale(aquarium_surface, (target_width, target_height))
+        
+        # JPEG formatında BytesIO'ya kaydet (PNG'den daha küçük)
+        img_bytes = BytesIO()
+        pygame.image.save(small_surface, img_bytes, "JPEG")
+        img_bytes.seek(0)
+        
+        # Base64'e çevir
+        base64_str = base64.b64encode(img_bytes.read()).decode('utf-8')
+        return f"data:image/jpeg;base64,{base64_str}"
+    
     def handle_click(self, pos):
         """Mouse tıklamalarını işle"""
         # Yem verme butonuna tıklandı mı?
@@ -266,6 +295,12 @@ class AquariumSimulator:
                 },
                 "timestamp": pygame.time.get_ticks()
             }
+            
+            # Kamera görüntüsünü ekle (her 12 frame'de bir = ~5 FPS)
+            self.camera_frame_counter += 1
+            if self.camera_frame_counter >= 12:
+                aquarium_data["camera_frame"] = self.capture_screenshot()
+                self.camera_frame_counter = 0
 
             # WebSocket üzerinden gönder
             ws_client.send_data(aquarium_data)
