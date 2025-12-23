@@ -29,6 +29,14 @@ const App = () => {
         color: "#000"
     });
 
+    // Sayfa yüklendiğinde localStorage'dan giriş durumunu kontrol et
+    useEffect(() => {
+        const loggedIn = localStorage.getItem("isLoggedIn");
+        if (loggedIn === "true") {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
     useEffect(() => {
         // WS BAĞLAN
         wsRef.current = new WebSocket("ws://136.114.212.51:5000/ws");
@@ -138,6 +146,7 @@ const App = () => {
     };
 
     const handleLogin = () => {
+        localStorage.setItem("isLoggedIn", "true");
         setIsLoggedIn(true);
     };
 

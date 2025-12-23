@@ -87,17 +87,24 @@ def login():
     username = data.get("username")
     password = data.get("password")
     
-    # Şimdilik herhangi bir kullanıcı adı ve şifre kabul edilir
-    if username and password:
-        return jsonify({
-            "success": True,
-            "message": "Giriş başarılı"
-        }), 200
-    else:
+    if not username or not password:
         return jsonify({
             "success": False,
             "message": "Kullanıcı adı ve şifre gerekli"
         }), 400
+    
+    # Veritabanından doğrula
+    if db.verify_user(username, password):
+        return jsonify({
+            "success": True,
+            "message": "Giriş başarılı",
+            "username": username
+        }), 200
+    else:
+        return jsonify({
+            "success": False,
+            "message": "Kullanıcı adı veya şifre hatalı"
+        }), 401
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

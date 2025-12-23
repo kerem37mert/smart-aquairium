@@ -25,6 +25,16 @@ class DB:
                 status TEXT
             )
         ''')
+        
+        # Kullanıcı tablosu
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
 
         # Basit migrasyon: temperature sütunu yoksa ekle
         try:
@@ -32,6 +42,14 @@ class DB:
         except sqlite3.OperationalError:
             # Sütun zaten varsa hata verir, yoksay
             pass
+        
+        # Varsayılan kullanıcı ekle (eğer yoksa)
+        cursor.execute('SELECT COUNT(*) FROM users')
+        if cursor.fetchone()[0] == 0:
+            cursor.execute('''
+                INSERT INTO users (username, password)
+                VALUES (?, ?)
+            ''', ('admin', 'admin123'))
 
         conn.commit()
         conn.close()
@@ -88,3 +106,18 @@ class DB:
             return {}
         
         return dict(row)
+    
+    def verify_user(self, username, password):
+        """Kullanıcı doğrulaması"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id FROM users
+            WHERE username = ? AND password = ?
+        ''', (username, password))
+        
+        result = cursor.fetchone()
+        conn.close()
+        
+        return result is not None

@@ -40,11 +40,30 @@ class AquariumDatabase:
             )
         ''')
         
+        # Kullanıcı tablosu
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
         # İndeksler (hızlı sorgulama için)
         cursor.execute('''
             CREATE INDEX IF NOT EXISTS idx_timestamp 
             ON aquarium_data(timestamp)
         ''')
+        
+        # Varsayılan kullanıcı ekle (eğer yoksa)
+        cursor.execute('SELECT COUNT(*) FROM users')
+        if cursor.fetchone()[0] == 0:
+            cursor.execute('''
+                INSERT INTO users (username, password)
+                VALUES (?, ?)
+            ''', ('admin', 'admin123'))
+            print("✓ Varsayılan kullanıcı oluşturuldu (admin/admin123)")
         
         conn.commit()
         conn.close()
@@ -244,3 +263,27 @@ class AquariumDatabase:
         
         print(f"✓ {deleted_count} eski kayıt silindi")
         return deleted_count
+    
+    def verify_user(self, username, password):
+        """
+        Kullanıcı doğrulaması yap
+        
+        Args:
+            username: Kullanıcı adı
+            password: Şifre
+            
+        Returns:
+            bool: Doğrulama başarılı ise True
+        """
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id FROM users
+            WHERE username = ? AND password = ?
+        ''', (username, password))
+        
+        result = cursor.fetchone()
+        conn.close()
+        
+        return result is not None
