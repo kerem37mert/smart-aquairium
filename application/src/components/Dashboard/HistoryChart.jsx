@@ -16,7 +16,7 @@ const HistoryChart = ({ data }) => {
         <div style={{
             backgroundColor: 'white',
             padding: '20px',
-            marginTop: '20px',
+            marginTop: '50px',
             border: "2px solid gray"
         }}>
             <h3 style={{ color: '#333', marginBottom: '20px' }}>Canlı Su Değerleri</h3>

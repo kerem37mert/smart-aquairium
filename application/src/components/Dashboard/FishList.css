@@ -1,19 +1,18 @@
 .fish-list-container {
     width: 100%;
-    margin-top: 30px;
-    padding: 20px;
-    background: linear-gradient(135deg, rgba(30, 30, 40, 0.95), rgba(20, 20, 30, 0.95));
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin-top: 50px;
+    padding: 20px 0;
+    background-color: #fff;
+    border: 2px solid gray;
 }
 
 .fish-list-title {
-    color: #e0e0e0;
+    color: rgb(100, 180, 220);
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
+    padding: 0 20px;
     text-align: center;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .no-fish-message {
@@ -27,21 +26,13 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
+    padding: 0 20px;
 }
 
 .fish-card {
-    background: linear-gradient(135deg, rgba(50, 50, 65, 0.9), rgba(40, 40, 55, 0.9));
-    border-radius: 12px;
+    background-color: #e0e0e0;
     padding: 16px;
-    border: 1px solid rgba(100, 150, 200, 0.3);
-    transition: all 0.3s ease;
     cursor: pointer;
-}
-
-.fish-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(100, 150, 200, 0.4);
-    border-color: rgba(100, 150, 200, 0.6);
 }
 
 .fish-card-header {
@@ -50,19 +41,18 @@
     gap: 12px;
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid #0e0e0e;
 }
 
 .fish-color-indicator {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid gray;
 }
 
 .fish-species {
-    color: #fff;
+    color: #000;
     font-size: 18px;
     font-weight: 600;
     flex: 1;
@@ -82,15 +72,15 @@
 }
 
 .detail-label {
-    color: #aaa;
+    color: #000;
     font-size: 14px;
     font-weight: 500;
 }
 
 .detail-value {
-    color: #e0e0e0;
+    color: #000;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 .health-good {
@@ -106,7 +96,7 @@
     .fish-cards {
         grid-template-columns: 1fr;
     }
-    
+
     .fish-list-container {
         padding: 15px;
     }
